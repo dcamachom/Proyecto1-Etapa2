@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Entrenar Modelo - Turismo de los Alpes</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            padding-top: 50px;
+            background-color: #f4f4f4;
+        }
+        h1 {
+            color: #333;
+            margin-bottom: 20px;
+        }
+        h2 {
+            color: #555;
+            margin-bottom: 30px;
+        }
+        .container {
+            max-width: 600px;
+            margin: auto;
+            background-color: #ffffff;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+        }
+        .input-group {
+            margin-bottom: 20px;
+        }
+        input[type="file"] {
+            display: none;
+        }
+        .custom-file-upload {
+            display: inline-block;
+            padding: 10px 20px;
+            cursor: pointer;
+            background-color: #5c85d6;
+            color: white;
+            border-radius: 5px;
+            transition: background-color 0.3s;
+        }
+        .custom-file-upload:hover {
+            background-color: #3d5ea3;
+        }
+        button {
+            margin-top: 20px;
+            padding: 12px 25px;
+            font-size: 18px;
+            cursor: pointer;
+            border: none;
+            background-color: #5c85d6;
+            color: white;
+            border-radius: 5px;
+            transition: background-color 0.3s;
+        }
+        button:hover {
+            background-color: #3d5ea3;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>TURISMO DE LOS ALPES</h1>
+        <h2>Entrenar el modelo</h2>
+        <p>Si desea entrenar el modelo con nuevos datos, por favor suba un archivo CSV:</p>
+        <div class="input-group">
+            <label for="archivoCsv" class="custom-file-upload">
+                Subir CSV
+            </label>
+            <input type="file" id="archivoCsv" accept=".csv">
+        </div>
+        <button onclick="entrenarModelo()">Entrenar Modelo</button>
+    </div>
+
+    <script>
+        function entrenarModelo() {
+            // Aquí iría el código para manejar la subida y entrenamiento del modelo
+            alert("Modelo en entrenamiento con los datos proporcionados.");
+        }
+    </script>
+</body>
+</html>

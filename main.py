@@ -1,15 +1,19 @@
 from typing import Optional
 from fastapi import FastAPI
+from fastapi.responses import HTMLResponse
 import pandas as pd
 from joblib import load
-import DataModel
+from DataModel import DataModel
+from fastapi.staticfiles import StaticFiles
 
 app = FastAPI()
-
+app.mount("/static", StaticFiles(directory="templates"), name="static") 
 
 @app.get("/")
 def read_root():
-   return {"Hello": "World"}
+   with open('templates/index.html','r') as file:
+      conten= file.read()
+   return HTMLResponse(conten)
 
 
 @app.get("/items/{item_id}")
