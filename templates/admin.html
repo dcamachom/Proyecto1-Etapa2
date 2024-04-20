@@ -75,9 +75,32 @@
     </div>
 
     <script>
-        function entrenarModelo() {
-            // Aquí iría el código para manejar la subida y entrenamiento del modelo
-            alert("Modelo en entrenamiento con los datos proporcionados.");
+        async function reentrenarModelo() {
+            const archivo = document.getElementById("archivoCsvEntrenamiento").files[0];
+            
+            if (!archivo) {
+                alert("Por favor, seleccione un archivo CSV.");
+                return;
+            }
+
+            const formData = new FormData();
+            formData.append("archivo", archivo);
+
+            try {
+                const response = await fetch("/retrain", {
+                    method: "POST",
+                    body: formData
+                });
+
+                if (response.ok) {
+                    document.getElementById("estado").innerText = "Modelo reentrenado con éxito.";
+                } else {
+                    alert("Error al reentrenar el modelo.");
+                }
+            } catch (error) {
+                console.error("Error:", error);
+                alert("Error al reentrenar el modelo.");
+            }
         }
     </script>
 </body>
