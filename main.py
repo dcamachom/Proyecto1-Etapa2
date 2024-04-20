@@ -2,9 +2,13 @@ from typing import Optional
 from fastapi import FastAPI
 from fastapi.responses import HTMLResponse
 import pandas as pd
-from joblib import load
+from joblib import load, dump
 from DataModel import DataModel
 from fastapi.staticfiles import StaticFiles
+
+import logging
+
+logging.basicConfig(level=logging.DEBUG)
 
 app = FastAPI()
 app.mount("/static", StaticFiles(directory="templates"), name="static") 
@@ -22,16 +26,29 @@ def read_item(item_id: int, q: Optional[str] = None):
 
 @app.post("/predict")
 def make_predictions(dataModel: DataModel):
-    df = pd.DataFrame(dataModel.dict(), columns=dataModel.dict().keys(), index=[0])
-    df.columns = dataModel.columns()
+    try:
+        df = pd.DataFrame(dataModel.dict(), columns=dataModel.columns(), index=[0])
+        print(df)
+    except Exception as e:
+        return {"error": f"Error al crear DataFrame: {e}"}
+
     model = load("assets/modelo.joblib")
-    result = model.predict(df)
-    return result
+    try:
+        result = model.predict(df)
+        return {"result": result.tolist()}  # Convertir a lista si es necesario
+    except Exception as e:
+        return {"error": f"Error al hacer la predicción: {e}"}
+
 
 @app.post("/retrain")
 def retrain_model(dataModel: DataModel):
-    df = pd.DataFrame(dataModel.dict(), columns=dataModel.dict().keys(), index=[0])
-    df.columns = dataModel.columns()
+    df = pd.DataFrame(dataModel.dict(), columns=dataModel.columns(), index=[0])
+    X = df.drop(columns=["classification"])
+    y = df["classification"]
+
     model = load("assets/modelo.joblib")
-    result = model.fit(df)
-    return result
+    model.fit(X, y)
+    
+    dump(model, "assets/modelo_reentrenado.joblib")
+    
+    return {"message": "Modelo reentrenado con éxito."}
