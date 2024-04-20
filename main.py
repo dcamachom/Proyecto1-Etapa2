@@ -27,3 +27,11 @@ def make_predictions(dataModel: DataModel):
     model = load("assets/modelo.joblib")
     result = model.predict(df)
     return result
+
+@app.post("/retrain")
+def retrain_model(dataModel: DataModel):
+    df = pd.DataFrame(dataModel.dict(), columns=dataModel.dict().keys(), index=[0])
+    df.columns = dataModel.columns()
+    model = load("assets/modelo.joblib")
+    result = model.fit(df)
+    return result

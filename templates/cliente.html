@@ -76,9 +76,33 @@
     </div>
 
     <script>
-        function predecirCalificacion() {
-            // Aquí iría el código para manejar la subida y predicción de calificaciones
-            alert("Predicción de calificaciones en proceso.");
+        async function predecirCalificacion() {
+            const archivo = document.getElementById("archivoCsvPred").files[0];
+            
+            if (!archivo) {
+                alert("Por favor, seleccione un archivo CSV.");
+                return;
+            }
+
+            const formData = new FormData();
+            formData.append("archivo", archivo);
+
+            try {
+                const response = await fetch("/predict", {
+                    method: "POST",
+                    body: formData
+                });
+
+                if (response.ok) {
+                    const data = await response.json();
+                    document.getElementById("resultado").innerText = "Predicción: " + data.result;
+                } else {
+                    alert("Error al realizar la predicción.");
+                }
+            } catch (error) {
+                console.error("Error:", error);
+                alert("Error al realizar la predicción.");
+            }
         }
     </script>
 </body>
